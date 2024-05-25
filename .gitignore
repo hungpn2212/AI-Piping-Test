@@ -27,3 +27,5 @@ dist/
 # Miscellaneous
 *.swp
 .DS_Store
+
+.env
