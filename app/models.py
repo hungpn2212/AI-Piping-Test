@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from app.constants import Season, Country, CountryCode
+
+from app.constants import Country, CountryCode, Season
 
 
 class ErrorMessage(BaseModel):
@@ -7,7 +8,7 @@ class ErrorMessage(BaseModel):
 
 
 class RecommendationRequest(BaseModel):
-    country: CountryCode # type: ignore
+    country: CountryCode  # type: ignore
     season: Season
 
 

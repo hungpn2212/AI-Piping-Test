@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = None
     MODEL_NAME: str = 'gpt-3.5-turbo'
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file='.env')
 
 
 settings_dict = Settings().model_dump()

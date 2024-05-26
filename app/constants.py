@@ -7,7 +7,6 @@ class BaseEnum(str, Enum):
         return [e.value for e in cls]
 
 
-
 class Season(BaseEnum):
     SPRING = 'spring'
     SUMMER = 'summer'

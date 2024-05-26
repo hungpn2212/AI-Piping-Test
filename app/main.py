@@ -1,16 +1,17 @@
 import logging
 
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
-from app.constants import COUNTRY_MAPPINGS, Season, CountryCode
-from app.models import RecommendationResponse, RecommendationRequest, ErrorMessage
+from app.constants import COUNTRY_MAPPINGS, CountryCode, Season
+from app.models import (ErrorMessage, RecommendationRequest,
+                        RecommendationResponse)
 from app.service import generate_recommendations
 
 app = FastAPI(
-    summary="Travel Recommendations API",
-    version="0.0.1",
+    summary='Travel Recommendations API',
+    version='0.0.1',
 )
 logger = logging.getLogger(__name__)
 
