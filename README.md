@@ -30,6 +30,17 @@ https://docs.docker.com/get-docker/
 
 ## Setup
 
+### Add env
+Create **.env** file in the project's root directory and copy env variables from **.env_sample** file
+
+```bash
+ cp .env_sample .env
+```
+Add OPENAI_API_KEY env (Required) and model name (optional) inside .env file
+```
+  OPENAI_API_KEY=<Insert OpenAI API Key here>
+```  
+
 ### Using local env
 
 
