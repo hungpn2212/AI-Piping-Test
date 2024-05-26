@@ -28,7 +28,7 @@ class TestApp(TestCase):
         self.assertEqual(response.json(), {'message': 'Invalid season'})
 
     @patch('app.service.client.chat.completions.create', return_value=create_fake_openai_response())
-    def test_recommendation__success(self, openapi_mock):
+    def test_recommendation__success(self, openai_mock):
         season = 'summer'
         country_code = 'US'
         response = self.client.get(
@@ -43,7 +43,9 @@ class TestApp(TestCase):
             }
         )
 
-    @patch('app.service.client.chat.completions.create', return_value=create_fake_openai_response())
-    def test_recommendation__case_sensitive_country_code(self, openapi_mock):
-        response = self.client.get('/recommendations?season=summer&country=uS')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    @patch('app.service.client.chat.completions.create')
+    def test_recommendation__exception(self, openai_mock):
+        openai_mock.side_effect = Exception('Some error')
+        response = self.client.get('/recommendations?season=summer&country=US')
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(response.json(), {'message': 'Internal server error'})

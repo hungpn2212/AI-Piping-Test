@@ -1,12 +1,18 @@
-class Season:
+from enum import Enum
+
+
+class BaseEnum(str, Enum):
+    @classmethod
+    def get_all(cls):
+        return [e.value for e in cls]
+
+
+
+class Season(BaseEnum):
     SPRING = 'spring'
     SUMMER = 'summer'
     FALL = 'fall'
     WINTER = 'winter'
-
-    @classmethod
-    def get_all_seasons(cls):
-        return [cls.SPRING, cls.SUMMER, cls.FALL, cls.WINTER]
 
 
 COUNTRY_MAPPINGS = {
@@ -256,3 +262,7 @@ COUNTRY_MAPPINGS = {
     'ZW': 'Zimbabwe',
     'ZZ': 'Unknown or unspecified country',
 }
+
+CountryCode = BaseEnum('VN', {key: key for key in COUNTRY_MAPPINGS.keys()})
+
+Country = BaseEnum('Country', COUNTRY_MAPPINGS)

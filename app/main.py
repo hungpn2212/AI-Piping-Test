@@ -1,33 +1,44 @@
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
-from app.constants import COUNTRY_MAPPINGS, Season
+from app.constants import COUNTRY_MAPPINGS, Season, CountryCode
+from app.models import RecommendationResponse, RecommendationRequest, ErrorMessage
 from app.service import generate_recommendations
 
-app = FastAPI()
+app = FastAPI(
+    summary="Travel Recommendations API",
+    version="0.0.1",
+)
 logger = logging.getLogger(__name__)
 
 
-@app.get('/recommendations')
-async def main(country: str, season: str):
-    if season not in Season.get_all_seasons():
+@app.get(
+    '/recommendations',
+    response_model=RecommendationResponse,
+    responses={400: {'model': ErrorMessage}, 500: {'model': ErrorMessage}},
+)
+async def get_recommendations(
+    country: str = Query(..., enum=CountryCode.get_all()),
+    season: str = Query(..., enum=Season.get_all()),
+) -> RecommendationResponse:
+    if season not in Season.get_all():
         return JSONResponse(
             status_code=400,
             content={'message': 'Invalid season'},
         )
 
-    if country.upper() not in COUNTRY_MAPPINGS:
+    if country not in CountryCode.get_all():
         return JSONResponse(
             status_code=400,
             content={'message': 'Invalid country'},
         )
 
-    country_name = COUNTRY_MAPPINGS[country.upper()]
+    country_name = COUNTRY_MAPPINGS[country]
     try:
         recommendations = generate_recommendations(season, country_name)
-        return {'country': country_name, 'season': season, 'recommendations': recommendations}
     except Exception as e:
         logger.error(
             f'Getting this error when calling chatgpt API to get recommendation: {e}')
@@ -35,3 +46,13 @@ async def main(country: str, season: str):
             status_code=500,
             content={'message': 'Internal server error'},
         )
+
+    response: RecommendationRequest = RecommendationResponse(
+        country=country_name,
+        season=season,
+        recommendations=recommendations,
+    )
+    return JSONResponse(
+        jsonable_encoder(response),
+        status_code=200,
+    )
