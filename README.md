@@ -28,7 +28,17 @@ brew install make
 https://docs.docker.com/get-docker/
 
 
+### Install python3 with version >= 3.9.0
+
 ## Setup
+### Clone the project to your local machine
+```bash
+git clone https://github.com/hungpn2212/AI-Piping-Test ai-piping
+```
+### Navigate to the project
+```bash
+cd ai-piping
+```
 
 ### Add env
 Create **.env** file in the project's root directory and copy env variables from **.env_sample** file
@@ -42,9 +52,6 @@ Add OPENAI_API_KEY env (Required) and model name (optional) inside .env file
 ```  
 
 ### Using local env
-
-
-Install python3 with version >= 3.9.0
 
 #### Create virtualenv
 ```
